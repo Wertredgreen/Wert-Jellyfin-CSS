@@ -11,7 +11,7 @@
 #videoOsdPage .videoOsdBottom-maincontrols .osdControls {
     box-sizing: border-box;
     min-width: 0;
-    max-width: 1040px;
+    width: 100%;
     padding-inline: clamp(12px, 3vw, 32px);
 }
 
@@ -45,10 +45,9 @@
 }
 
 #videoOsdPage .videoOsdBottom-maincontrols .buttons {
-    flex-wrap: nowrap;
-    justify-content: safe center;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: var(--player-button-gap);
-    overflow-x: auto;
     padding: 5px;
     margin: 7px -5px 0;
 }
@@ -56,6 +55,9 @@
 #videoOsdPage .osdControls .buttons > div[dir="ltr"] {
     display: flex;
     flex: 0 0 auto;
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: var(--player-button-gap);
 }
 
@@ -110,9 +112,35 @@
     display: contents;
 }
 
-#videoOsdPage .osdControls .endsAtText:not(:empty) {
+/* The header and the live end time are in separate Jellyfin containers. */
+body:has(.osdHeader .headerRight) #videoOsdPage .osdControls .endsAtText:not(:empty) {
+    display: block !important; /* Jellyfin hides the label on smaller screens. */
+    position: fixed;
+    top: calc(env(safe-area-inset-top, 0px) + 2.2em);
+    right: calc(env(safe-area-inset-right, 0px) + 7em);
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none;
     white-space: nowrap;
-    padding-inline: 4px;
+    font-size: clamp(12px, 1.4vw, 16px);
+    text-shadow: 0 1px 5px #000;
+}
+
+.osdHeader .headerRight {
+    margin-left: 9em; /* Leave space for the end time beside the buttons. */
+    anchor-name: --jellyfin-player-header-actions;
+}
+
+@supports (right: anchor(left)) {
+    body:has(.osdHeader .headerRight) #videoOsdPage .osdControls .endsAtText:not(:empty) {
+        position-anchor: --jellyfin-player-header-actions;
+        top: anchor(center);
+        right: calc(anchor(left) + 8px);
+    }
+}
+
+body:has(.osdHeader-hidden) #videoOsdPage .osdControls .endsAtText {
+    visibility: hidden;
 }
 
 #videoOsdPage .osdControls .volumeButtons {
@@ -140,21 +168,7 @@
 }
 
 @media (orientation: portrait) {
-    #videoOsdPage .videoOsdBottom-maincontrols .buttons {
-        flex-wrap: wrap;
-        justify-content: center;
-        overflow: visible;
-    }
-
     #videoOsdPage .osdControls .buttons > div[dir="ltr"] {
         flex-basis: 100%;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    #videoOsdPage .osdControls .endsAtText:not(:empty) {
-        flex-basis: 100%;
-        order: 1;
-        text-align: center;
     }
 }
