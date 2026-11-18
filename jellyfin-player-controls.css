@@ -1,0 +1,160 @@
+/* Jellyfin Web video controls. Paste into Custom CSS. */
+#videoOsdPage .videoOsdBottom-maincontrols {
+    --player-button-size: 48px;
+    --player-button-gap: 8px;
+    --player-scrubber-height: 44px;
+    padding-top: clamp(20px, 8vh, 72px);
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    background: linear-gradient(to top, rgba(0, 0, 0, .93), rgba(0, 0, 0, .73) 70%, transparent);
+}
+
+#videoOsdPage .videoOsdBottom-maincontrols .osdControls {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 1040px;
+    padding-inline: clamp(12px, 3vw, 32px);
+}
+
+#videoOsdPage .osdControls .sliderContainer:has(> .osdPositionSlider) {
+    height: var(--player-scrubber-height);
+    min-width: 0;
+    margin-block: 0 !important; /* Jellyfin sets margins inline. */
+}
+
+#videoOsdPage .osdControls .osdPositionSlider {
+    height: 100%;
+    padding: 0;
+}
+
+#videoOsdPage .osdPositionSlider ~ .mdl-slider-background-flex-container .mdl-slider-background-flex {
+    height: 6px;
+    margin-top: -3px;
+    border-radius: 99px;
+}
+
+#videoOsdPage .osdControls .osdPositionSlider:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+    border-radius: 6px;
+}
+
+#videoOsdPage .osdControls :is(.osdPositionText, .osdDurationText) {
+    padding-inline: 4px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+#videoOsdPage .videoOsdBottom-maincontrols .buttons {
+    flex-wrap: nowrap;
+    justify-content: safe center;
+    gap: var(--player-button-gap);
+    overflow-x: auto;
+    padding: 5px;
+    margin: 7px -5px 0;
+}
+
+#videoOsdPage .osdControls .buttons > div[dir="ltr"] {
+    display: flex;
+    flex: 0 0 auto;
+    gap: var(--player-button-gap);
+}
+
+#videoOsdPage .osdControls .buttons button {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    display: inline-grid;
+    place-items: center;
+    width: var(--player-button-size);
+    min-width: var(--player-button-size);
+    height: var(--player-button-size);
+    min-height: var(--player-button-size);
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, .1);
+    touch-action: manipulation;
+}
+
+#videoOsdPage .osdControls .buttons button.hide {
+    display: none !important;
+}
+
+#videoOsdPage .osdControls .buttons button:not(.hide):is(.btnRewind, .btnFastForward) {
+    display: inline-grid !important; /* Jellyfin hides these at narrower widths. */
+}
+
+#videoOsdPage .osdControls .buttons button > .material-icons {
+    font-size: 24px;
+}
+
+#videoOsdPage .osdControls .buttons .btnPause {
+    width: 64px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, .24);
+}
+
+#videoOsdPage .osdControls .buttons .btnPause > .material-icons {
+    font-size: 32px;
+}
+
+#videoOsdPage .osdControls .buttons button:active {
+    background-color: rgba(255, 255, 255, .38);
+}
+
+#videoOsdPage .osdControls .buttons button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+#videoOsdPage .osdControls .osdTimeText {
+    display: contents;
+}
+
+#videoOsdPage .osdControls .endsAtText:not(:empty) {
+    white-space: nowrap;
+    padding-inline: 4px;
+}
+
+#videoOsdPage .osdControls .volumeButtons {
+    flex: 0 0 auto;
+    gap: var(--player-button-gap);
+    margin: 0;
+}
+
+#videoOsdPage .videoOsdBottom-hidden .osdControls {
+    pointer-events: none;
+}
+
+@media (max-width: 480px) {
+    #videoOsdPage .videoOsdBottom-maincontrols {
+        --player-button-size: 44px;
+        --player-button-gap: 6px;
+    }
+}
+
+@media (pointer: fine) and (min-width: 900px) {
+    #videoOsdPage .videoOsdBottom-maincontrols {
+        --player-button-size: 44px;
+        --player-button-gap: 10px;
+    }
+}
+
+@media (orientation: portrait) {
+    #videoOsdPage .videoOsdBottom-maincontrols .buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow: visible;
+    }
+
+    #videoOsdPage .osdControls .buttons > div[dir="ltr"] {
+        flex-basis: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #videoOsdPage .osdControls .endsAtText:not(:empty) {
+        flex-basis: 100%;
+        order: 1;
+        text-align: center;
+    }
+}
